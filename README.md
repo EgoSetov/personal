@@ -1,46 +1,30 @@
-# Getting Started with Create React App
+Node version = 16.14.2
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
+Запуск приложения
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Запуск json-server
+### `json-server db.json -m ./node_modules/json-server-auth --port 8000`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+--Пользователи--
+[
+	{email: "user1@mail.ru", password: "user1"},
+	{email: "user2@mail.ru", password: "user2"},
+	{email: "user3@mail.ru", password: "user3"},
+	{email: "user4@mail.ru", password: "user4"}
+]
 
-### `npm test`
+--Возможности--
+- Авторизация
+- Поиск пользователей по email
+- Добавление / удаление пользователей
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+--Примечания--
+Мне кажется, что я немного не понял логику приложения, так как заметил строку о том, что я могу изменить данные контактов.
+Если функционал не соответствует вашим ожиданиям, пожалуйста, напишите мне об этом и я исправлю всё в кратчайшие сроки.
 
-### `npm run build`
+Не обращайте внимание на то, как сохранются контакты у пользователя в поле contacts, json-server показался мне не очень удобным, ну или я не разобрался в нём, как следовало. 
+Мне легче было сделать свою API с помощью  Express.js и там уже возвращать бы те данные, которые я считаю нужным вернуть, но старался сделать все, как можно быстрее с сохранением функционала.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Также хочу сказать честно, это мое первое React приложение, где я использовал TS, до этого я писал только простые сайты на Node.js + TS.
+Трудности возникли только на этапе использования Redux-thunk совместно с TS. А так все good :)
