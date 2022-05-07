@@ -1,26 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { Container } from 'react-bootstrap';
+import { Route, Routes } from 'react-router-dom';
+import PageLogin from './pages/PageLogin'
+import { useSelector } from 'react-redux';
+import { TstoreState } from './store'
+import PageContacts from './pages/PageContacts';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+	const isAuth = useSelector((state: TstoreState) => state.user.isAuth)
+
+	return (
+		<div className="App">
+			<Container>
+				<Routes>
+					{isAuth ?
+						<>
+							<Route path='/contacts' element={<PageContacts />} />
+							<Route path='*' element={<PageContacts />} />
+						</>
+						:
+						<>
+							<Route path='/' element={<PageLogin />} />
+							<Route path='*' element={<PageLogin />} />
+						</>
+					}
+				</Routes>
+			</Container>
+		</div>
+	);
 }
 
 export default App;

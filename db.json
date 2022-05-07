@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "email": "user1@mail.ru",
+      "password": "$2a$10$QK2bTSn.z72P7ef9eYaLI.XYm8pG8oip2AnsldpSWowdqKnv7FZcm",
+      "contacts": [],
+      "id": 1
+    },
+    {
+      "email": "user2@mail.ru",
+      "password": "$2a$10$gIyvBk5cMHuP5tSoBGaaGOWY.JH2t3zQOr8F.FmZEpXCP.q2BCcma",
+      "contacts": [],
+      "id": 2
+    },
+    {
+      "email": "user3@mail.ru",
+      "password": "$2a$10$mhdq0sbG3sFAYnioZiyavOFw78PoUnfVLtKBXTcDA2DCxhxCZlCs2",
+      "contacts": [],
+      "id": 3
+    },
+    {
+      "email": "user4@mail.ru",
+      "password": "$2a$10$Sj/81yTLwREwpafNuOxgsO.Uo0gbCDtMbHR5U1K/Sd3vFTmMGESsu",
+      "contacts": [],
+      "id": 4
+    }
+  ]
+}
