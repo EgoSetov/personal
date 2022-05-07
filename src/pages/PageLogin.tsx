@@ -5,9 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../store'
 
-type Props = {}
-
-const PageLogin = (props: Props) => {
+const PageLogin = () => {
 
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
@@ -28,7 +26,7 @@ const PageLogin = (props: Props) => {
 
 	const login = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		const res = await loginAsyncAC({
+		await loginAsyncAC({
 			email: inputValue.login,
 			password: inputValue.password
 		})

@@ -4,9 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { actionCreators, TstoreState } from '../store'
 
-type Props = {}
-
-const PageContacts = (props: Props) => {
+const PageContacts = () => {
 
 	const dispatch = useDispatch()
 	const { getMyContactsAsyncAC, searchAsyncAC, addContactAsyncAC, removeContactAsyncAC } = bindActionCreators(actionCreators, dispatch)
@@ -20,7 +18,7 @@ const PageContacts = (props: Props) => {
 		(async () => {
 			await getMyContactsAsyncAC(userId)
 		})()
-	}, [dispatch])
+	}, [])
 
 	const search = async () => {
 		await searchAsyncAC(inputValue)

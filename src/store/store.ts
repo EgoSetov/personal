@@ -1,4 +1,3 @@
-import middlewares from "json-server-auth";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunk from "redux-thunk";
 import searchReducer from "./reducers/searchReducer";

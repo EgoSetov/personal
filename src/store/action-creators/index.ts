@@ -2,7 +2,6 @@ import { TstoreState } from './../store';
 import { Taction } from './../actions/index';
 import { EactionType } from '../action-type/index';
 import { Dispatch } from 'redux'
-import { isError } from 'util';
 
 export const addContactAC = (userId: number) => (dispatch: Dispatch) => dispatch({ type: EactionType.ADD_CONTACT, userId })
 export const fillUserDataAC = (data: Tuser) => (dispatch: Dispatch) => dispatch({ type: EactionType.FILL_USER_DATA, data })
@@ -29,12 +28,15 @@ export const loginAsyncAC = (dataLogin: { email: string, password: string }) => 
 				type: EactionType.FILL_USER_DATA,
 				data: data
 			})
-			return true
+
 		} else {
-			return false
+			return {
+				detail: 'user not found'
+			}
 		}
 	} catch (error) {
-		return false
+		console.log(error);
+		
 	}
 }
 
@@ -55,7 +57,6 @@ export const getMyContactsAsyncAC = (id: number) => async (dispatch: Dispatch<Ta
 
 	} catch (error) {
 		console.log(error);
-		return false
 	}
 }
 
@@ -73,7 +74,6 @@ export const searchAsyncAC = (email: string) => async (dispatch: Dispatch<Tactio
 
 	} catch (error) {
 		console.log(error);
-		return false
 	}
 }
 
@@ -104,7 +104,6 @@ export const addContactAsyncAC = (user: Tcontact) => async (dispatch: Dispatch<T
 
 	} catch (error) {
 		console.log(error);
-		return false
 	}
 }
 
@@ -129,6 +128,5 @@ export const removeContactAsyncAC = (id: number) => async (dispatch: Dispatch<Ta
 		}
 	} catch (error) {
 		console.log(error);
-		return false
 	}
 }
