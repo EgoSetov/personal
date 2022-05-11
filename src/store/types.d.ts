@@ -1,20 +1,17 @@
 
 type Tuser = {
 	id: number,
-	login: string
+	login: string,
+	contacts: [Tcontact]
 }
 
 type Tcontact = {
-	id: number,
+	id: string,
 	email: string
+	name: string
 }
 
 type Tstate = {
 	isAuth: boolean,
 	user: Tuser | null,
-	contacts: [Tcontact] | []
-}
-
-type TitemsSearch = {
-	items: [Tcontact] | []
 }

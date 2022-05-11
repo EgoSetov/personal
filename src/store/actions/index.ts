@@ -20,9 +20,4 @@ interface IfillContacts {
 	contacts: [Tcontact]
 }
 
-interface IfillSearchItems {
-	type: EactionType.FILL_SEARCH_ITEMS,
-	items: [Tcontact]
-}
-
-export type Taction = IaddContact | IfillUserData | Ilogin | IfillContacts | IfillSearchItems
+export type Taction = IaddContact | IfillUserData | Ilogin | IfillContacts

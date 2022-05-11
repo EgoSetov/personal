@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { TstoreState } from './store'
 import PageContacts from './pages/PageContacts';
 
-function App() {
+const App: React.FC = () => {
 
 	const isAuth = useSelector((state: TstoreState) => state.user.isAuth)
 

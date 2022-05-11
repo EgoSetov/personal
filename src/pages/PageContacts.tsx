@@ -1,80 +1,105 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Form, ListGroup } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { actionCreators, TstoreState } from '../store'
+import React, { useState } from "react";
+import { Button, ButtonGroup, Card, Form, ListGroup, Modal } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { bindActionCreators } from "redux";
+import FormAddContact from "../modules/FormAddContact";
+import FormChangeContact from "../modules/FormChangeContact";
+import { actionCreators, TstoreState } from "../store";
 
-const PageContacts = () => {
+const PageContacts: React.FC = () => {
+	const dispatch = useDispatch();
+	const { addContactAsyncAC, removeContactAsyncAC, changeContactAsyncAC } = bindActionCreators(actionCreators, dispatch);
+	const contacts = useSelector((state: TstoreState) => state.user.user?.contacts || []);
 
-	const dispatch = useDispatch()
-	const { getMyContactsAsyncAC, searchAsyncAC, addContactAsyncAC, removeContactAsyncAC } = bindActionCreators(actionCreators, dispatch)
-	const contacts = useSelector((state: TstoreState) => state.user.contacts)
-	const userId = useSelector((state: TstoreState) => state.user.user?.id || 0)
-	const searchList = useSelector((state: TstoreState) => state.search.items)
-
-	const [inputValue, setinputValue] = useState('')
-
-	useEffect(() => {
-		(async () => {
-			await getMyContactsAsyncAC(userId)
-		})()
-	}, [])
-
-	const search = async () => {
-		await searchAsyncAC(inputValue)
-	}
+	const [inputValue, setinputValue] = useState("");
+	const [modalAddContact, setmodalAddContact] = useState(false)
+	const [modalChangeContact, setmodalChangeContact] = useState({
+		visible: false,
+		contact: {}
+	})
 
 	const addContact = async (user: Tcontact) => {
-		await addContactAsyncAC(user)
-	}
+		await addContactAsyncAC(user);
+		setmodalAddContact(false)
+	};
 
-	const removeContact = async (id: number) => {
-		await removeContactAsyncAC(id)
+	const removeContact = async (id: string) => {
+		await removeContactAsyncAC(id);
+	};
+
+	const changeContact = async (contact: Tcontact) => {
+		await changeContactAsyncAC(contact)
+		setmodalChangeContact({
+			visible: false,
+			contact: {}
+		})
 	}
 
 	return (
-		<div style={{ marginTop: '50px' }} className='container'>
-			<Form.Label htmlFor="inputPassword5">Поиск контактов</Form.Label>
-			<div className='d-flex'>
-				<Form.Control
-					className='me-2'
-					placeholder='Введите Email контакта'
-					onChange={(e) => setinputValue(e.target.value)}
-				/>
-				<Button onClick={search}>Поиск</Button>
-			</div>
-			<hr />
-			{!!contacts.length &&
-				<>
-					<h2>Мои контакты</h2>
-					<ListGroup className=''>
-						{contacts.map(person => (
-							<ListGroup.Item key={person.id} className='d-flex justify-content-between align-items-center'>
-								{person.email}
-								<Button onClick={() => removeContact(person.id)} className='btn-danger'>Удалить</Button>
-							</ListGroup.Item>
+		<>
+			<div style={{ marginTop: "50px" }} className="container">
+				<Form.Label htmlFor="inputPassword5">Поиск контактов</Form.Label>
+				<div className="d-flex">
+					<Form.Control
+						className="me-2"
+						placeholder="Введите контакт"
+						onChange={(e) => setinputValue(e.target.value)}
+						value={inputValue}
+					/>
+					<Button variant="success"
+						onClick={() => setmodalAddContact(true)}
+					>
+						Добавить
+					</Button>
+				</div>
+				<hr />
+				{!!contacts.length ? (
+					<>
+						<h2>Мои контакты</h2>
+						{contacts.map((contact: Tcontact) => (
+							<Card
+								style={{ flexDirection: 'row', marginBottom: '10px' }}
+								key={contact.id}
+								className="d-flex justify-content-between p-2 align-items-center"
+							>
+								{contact.name} | {contact.email}
+								<ButtonGroup>
+									<Button
+										onClick={() => setmodalChangeContact({ visible: true, contact })}
+										variant="warning"
+									>
+										Изменить
+									</Button>
+									<Button
+										onClick={() => removeContact(contact.id)}
+										variant="danger"
+									>
+										Удалить
+									</Button>
+								</ButtonGroup>
+							</Card>
 						))}
-					</ListGroup>
-					<hr />
-				</>
-			}
-			{!!searchList.length &&
-				<ListGroup>
-					<h2>Результат поиска</h2>
-					{searchList.map(person => (
-						<>
-							{person.id === userId ? null :
-								<ListGroup.Item key={person.id} className='d-flex justify-content-between align-items-center'>
-									{person.email}
-									<Button onClick={() => addContact(person)} className='btn-success'>Добавить</Button>
-								</ListGroup.Item>
-							}
-						</>
-					))}
-				</ListGroup>
-			}
-		</div>
-	)
-}
+					</>
+				)
+					:
+					<span className="text-muted">У вас нет контактов</span>
+				}
+			</div>
+			<Modal show={modalAddContact}>
+				<FormAddContact
+					close={() => setmodalAddContact(false)}
+					addContact={addContact}
+				/>
+			</Modal>
+			<Modal show={modalChangeContact.visible}>
+				<FormChangeContact
+					close={() => setmodalChangeContact(prev => ({ ...prev, visible: false }))}
+					changeContact={changeContact}
+					contact={modalChangeContact.contact}
+				/>
+			</Modal>
+		</>
+	);
+};
 
-export default PageContacts
+export default PageContacts;

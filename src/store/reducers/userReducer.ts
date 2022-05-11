@@ -4,7 +4,6 @@ import { Taction } from './../actions/index';
 const initialState: Tstate = {
 	isAuth: false,
 	user: null,
-	contacts: []
 }
 
 const userReducer = (state = initialState, action: Taction) => {
@@ -16,12 +15,17 @@ const userReducer = (state = initialState, action: Taction) => {
 				user: action.data
 			}
 		}
+			
 		case EactionType.FILL_CONTACTS: {
 			return {
 				...state,
-				contacts: action.contacts
+				user: {
+					...state.user,
+					contacts: action.contacts
+				}
 			}
 		}
+			
 		default: {
 			return state
 		}

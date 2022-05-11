@@ -5,7 +5,6 @@ import { Dispatch } from 'redux'
 
 export const addContactAC = (userId: number) => (dispatch: Dispatch) => dispatch({ type: EactionType.ADD_CONTACT, userId })
 export const fillUserDataAC = (data: Tuser) => (dispatch: Dispatch) => dispatch({ type: EactionType.FILL_USER_DATA, data })
-export const fillContactsAC = (contacts: [Tcontact]) => (dispatch: Dispatch) => dispatch({ type: EactionType.FILL_CONTACTS, contacts })
 
 export const loginAsyncAC = (dataLogin: { email: string, password: string }) => async (dispatch: Dispatch<Taction>) => {
 	try {
@@ -40,47 +39,9 @@ export const loginAsyncAC = (dataLogin: { email: string, password: string }) => 
 	}
 }
 
-export const getMyContactsAsyncAC = (id: number) => async (dispatch: Dispatch<Taction>) => {
+export const addContactAsyncAC = (contact: Tcontact) => async (dispatch: Dispatch<Taction>, getState: () => TstoreState) => {
 	try {
-		const res = await fetch(`http://localhost:8000/users/${id}`)
-			.then(data => data.json())
-
-		if (res.contacts.length) {
-
-			const contacts: [Tcontact] = res.contacts || []
-
-			dispatch({
-				type: EactionType.FILL_CONTACTS,
-				contacts
-			})
-		}
-
-	} catch (error) {
-		console.log(error);
-	}
-}
-
-export const searchAsyncAC = (email: string) => async (dispatch: Dispatch<Taction>) => {
-	try {
-		const res = await fetch(`http://localhost:8000/users/?email=${email}`)
-			.then(data => data.json())
-
-		const items: [Tcontact] = res
-
-		dispatch({
-			type: EactionType.FILL_SEARCH_ITEMS,
-			items
-		})
-
-	} catch (error) {
-		console.log(error);
-	}
-}
-
-export const addContactAsyncAC = (user: Tcontact) => async (dispatch: Dispatch<Taction>, getState: () => TstoreState) => {
-	try {
-		if (user.id === getState().user?.user?.id) return
-		if(getState().user.contacts.map(el => el.id).includes(user.id)) return
+		if(getState().user.user?.contacts?.map((person: Tcontact) => person.id).includes(contact.id)) return
 		
 		const res = await fetch(`http://localhost:8000/users/${getState().user.user?.id}`, {
 			method: 'PATCH',
@@ -88,26 +49,24 @@ export const addContactAsyncAC = (user: Tcontact) => async (dispatch: Dispatch<T
 				"Content-Type": "application/json"
 			},
 			body: JSON.stringify({
-				contacts: [...getState().user.contacts, user]
+				contacts: [...getState().user.user?.contacts ?? [], contact]
 			})
 		})
 			.then(data => data.json())
 
 		if (res?.contacts) {
 			dispatch({
-				type: EactionType.FILL_CONTACTS,
-				contacts: res.contacts
+				type: EactionType.FILL_USER_DATA,
+				data: res
 			})
 		}
-
-
 
 	} catch (error) {
 		console.log(error);
 	}
 }
 
-export const removeContactAsyncAC = (id: number) => async (dispatch: Dispatch<Taction>, getState: () => TstoreState) => {
+export const removeContactAsyncAC = (id: string) => async (dispatch: Dispatch<Taction>, getState: () => TstoreState) => {
 	try {
 		const res = await fetch(`http://localhost:8000/users/${getState().user.user?.id}`, {
 			method: 'PATCH',
@@ -115,18 +74,55 @@ export const removeContactAsyncAC = (id: number) => async (dispatch: Dispatch<Ta
 				"Content-Type": "application/json"
 			},
 			body: JSON.stringify({
-				contacts: getState().user.contacts.filter(person => person.id !== id)
+				contacts: getState().user.user?.contacts?.filter((person: Tcontact) => person.id !== id)
 			})
 		})
 			.then(data => data.json())
 
 		if (res?.contacts) {
 			dispatch({
-				type: EactionType.FILL_CONTACTS,
-				contacts: res.contacts
+				type: EactionType.FILL_USER_DATA,
+				data: res,
 			})
 		}
 	} catch (error) {
 		console.log(error);
+	}
+}
+
+export const changeContactAsyncAC = (contact: {id?:string, email?:string, name?:string}) => async (dispatch: Dispatch<Taction>, getState: () => TstoreState) => {
+	try {
+		const modifiedContacts = getState().user.user?.contacts?.map((person: Tcontact) => {
+			if (person.id === contact.id) {
+				return {
+					id: contact.id,
+					name: contact.name,
+					email: contact.email
+				}
+			}
+			return person
+		})
+		const res = await fetch(`http://localhost:8000/users/${getState().user.user?.id}`, {
+			method: 'PATCH',
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({
+				contacts: modifiedContacts
+			})
+		})
+			.then(data => data.json())
+		
+		if (res?.contacts) {
+			dispatch({
+				type: EactionType.FILL_CONTACTS,
+				contacts: res.contacts
+			})
+		}
+		
+
+	} catch (error) {
+		console.log(error);
+		
 	}
 }
