@@ -3,7 +3,23 @@
     {
       "email": "user1@mail.ru",
       "password": "$2a$10$QK2bTSn.z72P7ef9eYaLI.XYm8pG8oip2AnsldpSWowdqKnv7FZcm",
-      "contacts": [],
+      "contacts": [
+        {
+          "id": "Wed May 11 2022 21:05:46 GMT+0300 (Москва, стандартное время)",
+          "email": "sevostyanovegor02@mail.ru",
+          "name": "Егор"
+        },
+        {
+          "id": "Wed May 11 2022 21:05:51 GMT+0300 (Москва, стандартное время)",
+          "email": "test@mail.ru",
+          "name": "Наталья"
+        },
+        {
+          "id": "Wed May 11 2022 21:05:58 GMT+0300 (Москва, стандартное время)",
+          "email": "egor.sevostyanov.00@mail.ru",
+          "name": "123"
+        }
+      ],
       "id": 1
     },
     {

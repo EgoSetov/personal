@@ -35,6 +35,7 @@ const PageContacts: React.FC = () => {
 		})
 	}
 
+	const filterContacts = contacts.filter(contact => contact.name.toLowerCase().includes(inputValue.toLowerCase()))
 	return (
 		<>
 			<div style={{ marginTop: "50px" }} className="container">
@@ -53,10 +54,10 @@ const PageContacts: React.FC = () => {
 					</Button>
 				</div>
 				<hr />
-				{!!contacts.length ? (
+				{!!filterContacts.length ? (
 					<>
 						<h2>Мои контакты</h2>
-						{contacts.map((contact: Tcontact) => (
+						{filterContacts.map((contact: Tcontact) => (
 							<Card
 								style={{ flexDirection: 'row', marginBottom: '10px' }}
 								key={contact.id}
